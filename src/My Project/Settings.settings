@@ -1,0 +1,132 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="Location" Type="System.Drawing.Point" Scope="User">
+      <Value Profile="(Default)">-1, -1</Value>
+    </Setting>
+    <Setting Name="Size" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">-1, -1</Value>
+    </Setting>
+    <Setting Name="Filtro" Type="System.String" Scope="User">
+      <Value Profile="(Default)">*.*</Value>
+    </Setting>
+    <Setting Name="Directorio" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\</Value>
+    </Setting>
+    <Setting Name="conSubDir" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="IgnorarError" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="textoBuscar1" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="textoBuscar2" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="textoPoner1" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="textoPoner2" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="opcionBuscar" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Solo uno</Value>
+    </Setting>
+    <Setting Name="ultimosDirectorios" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\|E:\gsCodigo_00\VS2005; E:\gsCodigo_00\VS2008</Value>
+    </Setting>
+    <Setting Name="ultimosBuscar1" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ultimosBuscar2" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ultimosPoner1" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ultimosPoner2" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ultimosFiltros" Type="System.String" Scope="User">
+      <Value Profile="(Default)">*.*| *.zip; *.rar</Value>
+    </Setting>
+    <Setting Name="chkBuscarTexto" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="expanderBuscarExpanded" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="expanderFicheroExpanded" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="chkFecha" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Fecha" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="chkPoner" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="distinguirMay" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="lvCol1" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="lvCol2" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="FechaTipoBusc" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="chkBuscarMismaLinea" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="tsbMostrarResultados" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="dirConfig" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="usarMisDocumentos" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="chkPermitirReemplazar" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="chkHacerCopiaReemplazar" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="DirBackupReemplazar" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Extensiones" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.txt; .ini; .vb; .cs; .c; .h; .hpp; .cpp; .bas; .frm; .cls; .sql; .js; .aspx; .asp; .htm; .pl; .php; .xml; .xaml; .sln; .vbp; .vbproj; .csproj</Value>
+    </Setting>
+    <Setting Name="ExtensionesNo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.*; .com; .exe; .dll; .lib; .tlb; .bin; .ocx; .zip; .rar; .cab; .jpg; .png; .gif; .tif; .ico; .bmp</Value>
+    </Setting>
+    <Setting Name="chkPalabrasCompletas" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="chkExcluirDir" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="txtExcluirDir" Type="System.String" Scope="User">
+      <Value Profile="(Default)">_vti; _private</Value>
+    </Setting>
+    <Setting Name="chkGuardarAutomaticamente" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="chkMultiple" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="AbrirCon" Type="System.String" Scope="User">
+      <Value Profile="(Default)">"E:\ISOs guilleAcer5930\Instalar (registrados)\TextPad\TextPad portable\TextPad.exe"</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
