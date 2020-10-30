@@ -9,4 +9,4 @@ En la carpeta <b>src</b> está el código fuente para Visual Basic usando Visual
 En <b>Releases</b> tienes el ejecutable listo para usar (si tienes instalado .NET Framework 4.8)<br>
 <br>
 <br>
-Actualizado el 29 de octubre de 2020 a eso de las 17:16 GMT+1
+Actualizado el 30 de octubre de 2020 a eso de las 15:29 GMT+1

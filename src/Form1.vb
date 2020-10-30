@@ -88,6 +88,8 @@
 '                       la búsqueda, antes se asignaban en cada fichero que se buscaba.
 ' v3.0.0.4              Con AbrirCon se pueden abrir varios ficheros
 ' v3.0.0.5              Añado AbrirCon al menú contextual y menú fichero
+' v3.0.0.6  (30/Oct/20) Para AbrirCon a los ficheros los pongo entre comillas dobles
+' v3.0.0.7              Al guardar el tamaño de la ventana por error usaba GetValue en vez de SetValue.
 '
 '------------------------------------------------------------------------------
 Option Strict On
@@ -277,8 +279,9 @@ Public Class Form1
             If Me.WindowState = FormWindowState.Normal Then
                 m_Cfg.SetValue("Ventana", "Left", Me.Left)
                 m_Cfg.SetValue("Ventana", "Top", Me.Top)
-                m_Cfg.GetValue("Ventana", "Width", Me.Width)
-                m_Cfg.GetValue("Ventana", "Height", Me.Height)
+                ' Estaban con GetValue en vez de SetValue           (30/Oct/20)
+                m_Cfg.SetValue("Ventana", "Width", Me.Width)
+                m_Cfg.SetValue("Ventana", "Height", Me.Height)
             End If
 
             m_Cfg.Save()
@@ -1478,7 +1481,8 @@ Public Class Form1
             Dim fic As String = ""
             For i = 0 To .SelectedIndices.Count - 1
                 Dim s = Path.Combine(.SelectedItems(i).SubItems(1).Text, .SelectedItems(i).SubItems(0).Text)
-                fic &= s & " "
+                ' ponerlo entre comillas dobles por si hay espacios (30/Oct/20)
+                fic &= ChrW(34) & s & ChrW(34) & " "
             Next
 
             ' Abrir el fichero indicado
