@@ -3,8 +3,7 @@
   <PropertyGroup>
     <ProjectView>ProjectFiles</ProjectView>
     <PublishUrlHistory>publish\</PublishUrlHistory>
-    <InstallUrlHistory>
-    </InstallUrlHistory>
+    <InstallUrlHistory>http://www.elguille.info/NET/clickonce_pub/gsBuscarTexto/|http://www.elguille.info/</InstallUrlHistory>
     <SupportUrlHistory>
     </SupportUrlHistory>
     <UpdateUrlHistory>
@@ -18,5 +17,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <StartArguments>
     </StartArguments>
+  </PropertyGroup>
+  <PropertyGroup>
+    <EnableSecurityDebugging>false</EnableSecurityDebugging>
   </PropertyGroup>
 </Project>

@@ -112,12 +112,12 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
   <data name="chkPermitirReemplazar.ToolTip" xml:space="preserve">
@@ -131,7 +131,11 @@ Indica cada extensión con un punto y sepáralas con un punto y coma. NO indique
 Puedes arrastrar ficheros con las extensiones que quieres usar y se añadirán a las que haya.
 No se permitirá en: </value>
   </data>
-  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="chkGuardarAutomaticamente.ToolTip" xml:space="preserve">
+    <value>SI ESTA OPCIÓN ESTÁ SELECCIONADA, al reemplazar se guardarán automáticamente los cambios en el fichero original, salvo que se indique hacer copia de seguridad.
+IMPORTANTE: usa esta opcion sólo si sabes con certeza que podrás reemplazar todos los ficheros afectados, el autor del programa no se hace responsable de los fallos que puedan ocurrir al utilizar esta opción.</value>
+  </data>
+  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>221, 17</value>
   </metadata>
   <data name="txtInfoShell.Text" xml:space="preserve">
@@ -143,11 +147,7 @@ Si la opción está desactivada, se quita del menú contextual.
 Solo se puede cambiar el valor si se ejecuta la aplicación como administrador,
 </value>
   </data>
-  <data name="chkGuardarAutomaticamente.ToolTip" xml:space="preserve">
-    <value>SI ESTA OPCIÓN ESTÁ SELECCIONADA, al reemplazar se guardarán automáticamente los cambios en el fichero original, salvo que se indique hacer copia de seguridad.
-IMPORTANTE: usa esta opcion sólo si sabes con certeza que podrás reemplazar todos los ficheros afectados, el autor del programa no se hace responsable de los fallos que puedan ocurrir al utilizar esta opción.</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAoAMDAQAAEABABoBgAApgAAACAgEAABAAQA6AIAAA4HAAAQEBAAAQAEACgBAAD2CQAAMDAAAAEA

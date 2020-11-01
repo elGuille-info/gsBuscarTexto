@@ -23,7 +23,7 @@ Public Class fBuscarCfg
     Private m_chkShell As Boolean
 
     Private Const programa As String = "gsBuscarTexto"
-    Private Const shellKey As String = "SOFTWARE\Classes\Folder\Shell"
+    'Private Const shellKey As String = "SOFTWARE\Classes\Folder\Shell"
 
     Private Sub fBuscarCfg_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         chkShell.Enabled = EsAdministrador
@@ -59,13 +59,13 @@ Public Class fBuscarCfg
         'toolTip1.SetToolTip(picReemplazar, "Estas opciones solo están disponibles cuando ejecutas la aplicación como administrador")
         LabelInfo.Text = picAdmin.ToolTipText
 
-        If EstaEnRegistro().HasValue Then
-            chkShell.Checked = EstaEnRegistro().Value
-        Else
-            chkShell.CheckState = CheckState.Indeterminate
-            toolTip1.SetToolTip(chkShell, "No se ha podido leer el valor del registro")
-            chkShell.Text &= " (error al leer clave)"
-        End If
+        'If EstaEnRegistro().HasValue Then
+        '    chkShell.Checked = EstaEnRegistro().Value
+        'Else
+        '    chkShell.CheckState = CheckState.Indeterminate
+        '    toolTip1.SetToolTip(chkShell, "No se ha podido leer el valor del registro")
+        '    chkShell.Text &= " (error al leer clave)"
+        'End If
 
         m_chkShell = chkShell.Checked
         m_DirCfg = My.Settings.dirConfig
@@ -91,9 +91,9 @@ Public Class fBuscarCfg
     End Sub
 
     Private Sub btnAceptar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAceptar.Click
-        If EsAdministrador Then
-            CrearShell(chkShell.Checked)
-        End If
+        'If EsAdministrador Then
+        '    CrearShell(chkShell.Checked)
+        'End If
 
         With My.Settings
             .usarMisDocumentos = optDirDocumentos.Checked
@@ -123,77 +123,81 @@ Public Class fBuscarCfg
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
     End Sub
 
-    Friend Shared Sub CrearShell(ByVal crearClave As Boolean)
-        ' Del blog de Enrique Cortés:
-        ' http://ekort.blogspot.com/2007/02/acceso-directo-ms-dos-desde-carpetas.html
-        '
-        ' Crear una clave en:
-        ' HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Folder\Shell
-        ' Crear el comando a ejecutar
+#Region " Acceso al registro de Windows "
 
-        ' Solo si se tienen privilegios de administrador
-        If EsAdministrador = False Then
-            Exit Sub
-        End If
+    'Friend Shared Sub CrearShell(ByVal crearClave As Boolean)
+    '    ' Del blog de Enrique Cortés:
+    '    ' http://ekort.blogspot.com/2007/02/acceso-directo-ms-dos-desde-carpetas.html
+    '    '
+    '    ' Crear una clave en:
+    '    ' HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Folder\Shell
+    '    ' Crear el comando a ejecutar
 
-        Const progId As String = "Abrir con gsBuscarTexto"
-        Dim sPath As String = ChrW(34) & Application.ExecutablePath & ChrW(34) & " " & _
-                              ChrW(34) & "%1" & ChrW(34) & " /sub /nobuscar /nofecha /noerror"
+    '    ' Solo si se tienen privilegios de administrador
+    '    If EsAdministrador = False Then
+    '        Exit Sub
+    '    End If
 
-        Try
-            Using rk As RegistryKey = Registry.LocalMachine.OpenSubKey(shellKey, True)
-                If rk Is Nothing Then
-                    MessageBox.Show("No se puede abrir la clave del registro.", _
-                                    "Crear opción contextual", _
-                                    MessageBoxButtons.OK, _
-                                    MessageBoxIcon.Exclamation)
-                End If
+    '    Const progId As String = "Abrir con gsBuscarTexto"
+    '    Dim sPath As String = ChrW(34) & Application.ExecutablePath & ChrW(34) & " " &
+    '                          ChrW(34) & "%1" & ChrW(34) & " /sub /nobuscar /nofecha /noerror"
 
-                If crearClave Then
-                    Using rkc As RegistryKey = rk.CreateSubKey(programa)
-                        rkc.SetValue("", progId)
-                        Using rkc2 As RegistryKey = rkc.CreateSubKey("command")
-                            rkc2.SetValue("", sPath)
-                        End Using
-                    End Using
-                Else
-                    ' Quitar la clave
-                    rk.DeleteSubKeyTree(programa)
-                End If
-            End Using
-        Catch ex As Exception
-            MessageBox.Show("Error al asignar el registro:" & vbCrLf & _
-                            ex.Message, _
-                            "Crear opción contextual", _
-                            MessageBoxButtons.OK, _
-                            MessageBoxIcon.Exclamation)
-        End Try
-    End Sub
+    '    Try
+    '        Using rk As RegistryKey = Registry.LocalMachine.OpenSubKey(shellKey, True)
+    '            If rk Is Nothing Then
+    '                MessageBox.Show("No se puede abrir la clave del registro.",
+    '                                "Crear opción contextual",
+    '                                MessageBoxButtons.OK,
+    '                                MessageBoxIcon.Exclamation)
+    '            End If
 
-    ''' <summary>
-    ''' Comprueba si ya está la clave del registro creada
-    ''' </summary>
-    ''' <returns>
-    ''' True si ya está registrado
-    ''' </returns>
-    ''' <remarks></remarks>
-    Friend Function EstaEnRegistro() As Boolean?
-        Dim progId As String = ""
-        Dim sKey As String = shellKey & "\" & programa
+    '            If crearClave Then
+    '                Using rkc As RegistryKey = rk.CreateSubKey(programa)
+    '                    rkc.SetValue("", progId)
+    '                    Using rkc2 As RegistryKey = rkc.CreateSubKey("command")
+    '                        rkc2.SetValue("", sPath)
+    '                    End Using
+    '                End Using
+    '            Else
+    '                ' Quitar la clave
+    '                rk.DeleteSubKeyTree(programa)
+    '            End If
+    '        End Using
+    '    Catch ex As Exception
+    '        MessageBox.Show("Error al asignar el registro:" & vbCrLf &
+    '                        ex.Message,
+    '                        "Crear opción contextual",
+    '                        MessageBoxButtons.OK,
+    '                        MessageBoxIcon.Exclamation)
+    '    End Try
+    'End Sub
 
-        Try
-            Using rk As RegistryKey = Registry.LocalMachine.OpenSubKey(sKey)
-                If rk IsNot Nothing Then
-                    progId = rk.GetValue("").ToString
-                    rk.Close()
-                End If
-            End Using
-        Catch ex As Exception
-            progId = "Error"
-        End Try
+    '''' <summary>
+    '''' Comprueba si ya está la clave del registro creada
+    '''' </summary>
+    '''' <returns>
+    '''' True si ya está registrado
+    '''' </returns>
+    '''' <remarks></remarks>
+    'Friend Function EstaEnRegistro() As Boolean?
+    '    Dim progId As String = ""
+    '    Dim sKey As String = shellKey & "\" & programa
 
-        Return Not String.IsNullOrEmpty(progId)
-    End Function
+    '    Try
+    '        Using rk As RegistryKey = Registry.LocalMachine.OpenSubKey(sKey)
+    '            If rk IsNot Nothing Then
+    '                progId = rk.GetValue("").ToString
+    '                rk.Close()
+    '            End If
+    '        End Using
+    '    Catch ex As Exception
+    '        progId = "Error"
+    '    End Try
+
+    '    Return Not String.IsNullOrEmpty(progId)
+    'End Function
+
+#End Region
 
     Private Sub btnRestaurarVentana_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRestaurarVentana.Click
         ' w, h 660; 541'515

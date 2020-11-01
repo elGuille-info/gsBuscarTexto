@@ -2113,10 +2113,10 @@ Public Class Form1
                             chkIgnorarErrores.Checked = True
                         Case "/error", "-error"
                             chkIgnorarErrores.Checked = False
-                        Case "/reg+", "-reg+"
-                            fBuscarCfg.CrearShell(True)
-                        Case "/reg-", "-reg-"
-                            fBuscarCfg.CrearShell(False)
+                            'Case "/reg+", "-reg+"
+                            '    fBuscarCfg.CrearShell(True)
+                            'Case "/reg-", "-reg-"
+                            '    fBuscarCfg.CrearShell(False)
                     End Select
                     Continue For
                 End If

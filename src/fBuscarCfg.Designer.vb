@@ -29,6 +29,7 @@ Partial Class fBuscarCfg
         Me.chkPermitirReemplazar = New System.Windows.Forms.CheckBox()
         Me.LabelExtensiones = New System.Windows.Forms.Label()
         Me.chkExcluirDir = New System.Windows.Forms.CheckBox()
+        Me.chkGuardarAutomaticamente = New System.Windows.Forms.CheckBox()
         Me.panelBotones = New System.Windows.Forms.Panel()
         Me.btnDeshacer = New System.Windows.Forms.Button()
         Me.statusStrip1 = New System.Windows.Forms.StatusStrip()
@@ -53,7 +54,6 @@ Partial Class fBuscarCfg
         Me.picReemplazar = New System.Windows.Forms.PictureBox()
         Me.grbDirExcluir = New System.Windows.Forms.GroupBox()
         Me.txtExcluirDir = New System.Windows.Forms.TextBox()
-        Me.chkGuardarAutomaticamente = New System.Windows.Forms.CheckBox()
         Me.panelBotones.SuspendLayout()
         Me.statusStrip1.SuspendLayout()
         Me.grbShell.SuspendLayout()
@@ -66,13 +66,14 @@ Partial Class fBuscarCfg
         'chkShell
         '
         Me.chkShell.AutoSize = True
+        Me.chkShell.Enabled = False
         Me.chkShell.Location = New System.Drawing.Point(12, 22)
         Me.chkShell.Margin = New System.Windows.Forms.Padding(6)
         Me.chkShell.Name = "chkShell"
         Me.chkShell.Size = New System.Drawing.Size(281, 17)
         Me.chkShell.TabIndex = 0
         Me.chkShell.Text = "Agregar menú contextual en las carpetas de Windows"
-        Me.toolTip1.SetToolTip(Me.chkShell, " Añadir 'Buscar' como opción al menú contextual de las carpetas y unidades (solo " & _
+        Me.toolTip1.SetToolTip(Me.chkShell, " Añadir 'Buscar' como opción al menú contextual de las carpetas y unidades (solo " &
         "como administrador)")
         Me.chkShell.UseVisualStyleBackColor = True
         '
@@ -109,9 +110,25 @@ Partial Class fBuscarCfg
         Me.chkExcluirDir.Size = New System.Drawing.Size(218, 17)
         Me.chkExcluirDir.TabIndex = 0
         Me.chkExcluirDir.Text = "Excluir los directorios que empiecen con:"
-        Me.toolTip1.SetToolTip(Me.chkExcluirDir, " Si se deben excluir de la búsqueda los directorios que empiecen con los caracter" & _
+        Me.toolTip1.SetToolTip(Me.chkExcluirDir, " Si se deben excluir de la búsqueda los directorios que empiecen con los caracter" &
         "es indicados " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & " (debes separar los directorios con puntos y comas)")
         Me.chkExcluirDir.UseVisualStyleBackColor = True
+        '
+        'chkGuardarAutomaticamente
+        '
+        Me.chkGuardarAutomaticamente.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.chkGuardarAutomaticamente.Checked = True
+        Me.chkGuardarAutomaticamente.CheckState = System.Windows.Forms.CheckState.Checked
+        Me.chkGuardarAutomaticamente.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.chkGuardarAutomaticamente.Location = New System.Drawing.Point(293, 99)
+        Me.chkGuardarAutomaticamente.Margin = New System.Windows.Forms.Padding(18, 3, 3, 3)
+        Me.chkGuardarAutomaticamente.Name = "chkGuardarAutomaticamente"
+        Me.chkGuardarAutomaticamente.Size = New System.Drawing.Size(239, 24)
+        Me.chkGuardarAutomaticamente.TabIndex = 4
+        Me.chkGuardarAutomaticamente.Text = "Guardar los cambios automáticamente"
+        Me.chkGuardarAutomaticamente.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.toolTip1.SetToolTip(Me.chkGuardarAutomaticamente, resources.GetString("chkGuardarAutomaticamente.ToolTip"))
+        Me.chkGuardarAutomaticamente.UseVisualStyleBackColor = False
         '
         'panelBotones
         '
@@ -318,7 +335,7 @@ Partial Class fBuscarCfg
         Me.txtExtensiones.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtExtensiones.Size = New System.Drawing.Size(441, 41)
         Me.txtExtensiones.TabIndex = 2
-        Me.txtExtensiones.Text = ".txt; .ini; .vb; .cs; .c; .h; .hpp; .cpp; .bas; .frm; .cls; .sql; .js; .aspx; .as" & _
+        Me.txtExtensiones.Text = ".txt; .ini; .vb; .cs; .c; .h; .hpp; .cpp; .bas; .frm; .cls; .sql; .js; .aspx; .as" &
     "p; .htm; .pl; .php; .xml; .xaml; .sln; .vbp; .vbproj; .csproj"
         '
         'LabelDirBackup
@@ -403,22 +420,6 @@ Partial Class fBuscarCfg
         Me.txtExcluirDir.Size = New System.Drawing.Size(441, 34)
         Me.txtExcluirDir.TabIndex = 1
         Me.txtExcluirDir.Text = "_vti; _private"
-        '
-        'chkGuardarAutomaticamente
-        '
-        Me.chkGuardarAutomaticamente.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.chkGuardarAutomaticamente.Checked = True
-        Me.chkGuardarAutomaticamente.CheckState = System.Windows.Forms.CheckState.Checked
-        Me.chkGuardarAutomaticamente.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.chkGuardarAutomaticamente.Location = New System.Drawing.Point(293, 99)
-        Me.chkGuardarAutomaticamente.Margin = New System.Windows.Forms.Padding(18, 3, 3, 3)
-        Me.chkGuardarAutomaticamente.Name = "chkGuardarAutomaticamente"
-        Me.chkGuardarAutomaticamente.Size = New System.Drawing.Size(239, 24)
-        Me.chkGuardarAutomaticamente.TabIndex = 4
-        Me.chkGuardarAutomaticamente.Text = "Guardar los cambios automáticamente"
-        Me.chkGuardarAutomaticamente.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
-        Me.toolTip1.SetToolTip(Me.chkGuardarAutomaticamente, resources.GetString("chkGuardarAutomaticamente.ToolTip"))
-        Me.chkGuardarAutomaticamente.UseVisualStyleBackColor = False
         '
         'fBuscarCfg
         '
