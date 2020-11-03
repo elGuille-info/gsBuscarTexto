@@ -35,7 +35,7 @@ Namespace elGuille.info.Util
 #If ESVSIDE Then
             EsAdministrador = True
 #Else
-            EsAdministrador = _EsAdministrador()
+            EsAdministrador = UserAdministrador()
 #End If
 
             FileVersion = _FileVersion
@@ -43,7 +43,7 @@ Namespace elGuille.info.Util
         End Sub
 
         ' Comprobar si se ejecuta como administrador                    (07/Feb/08)
-        Private Shared Function _EsAdministrador() As Boolean
+        Private Shared Function UserAdministrador() As Boolean
             My.User.InitializeWithWindowsUser()
 
             ' Microsoft.VisualBasic.ApplicationServices

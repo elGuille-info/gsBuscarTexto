@@ -49,6 +49,7 @@ Partial Class Form1
         Me.lvFicsContextMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuContextAbrirFic = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuContextAbrirDir = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuContextAbrirCon = New System.Windows.Forms.ToolStripMenuItem()
         Me.menuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.mnuFic = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFicExaminar = New System.Windows.Forms.ToolStripMenuItem()
@@ -57,6 +58,7 @@ Partial Class Form1
         Me.mnuFicSep1 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuFicAbrirFichero = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFicAbrirDir = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFicAbrirCon = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFicSep2 = New System.Windows.Forms.ToolStripSeparator()
         Me.mnuFicCfg = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFicSep3 = New System.Windows.Forms.ToolStripSeparator()
@@ -90,8 +92,6 @@ Partial Class Form1
         Me.tsbMostrarResultados = New System.Windows.Forms.ToolStripMenuItem()
         Me.picAdmin = New System.Windows.Forms.ToolStripStatusLabel()
         Me.picBuscando = New System.Windows.Forms.PictureBox()
-        Me.mnuContextAbrirCon = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuFicAbrirCon = New System.Windows.Forms.ToolStripMenuItem()
         Me.lvFicsContextMenu.SuspendLayout()
         Me.menuStrip1.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
@@ -364,6 +364,12 @@ Partial Class Form1
         Me.mnuContextAbrirDir.Size = New System.Drawing.Size(154, 22)
         Me.mnuContextAbrirDir.Text = "Abrir &directorio"
         '
+        'mnuContextAbrirCon
+        '
+        Me.mnuContextAbrirCon.Name = "mnuContextAbrirCon"
+        Me.mnuContextAbrirCon.Size = New System.Drawing.Size(154, 22)
+        Me.mnuContextAbrirCon.Text = "Abrir &con..."
+        '
         'menuStrip1
         '
         Me.menuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFic})
@@ -414,6 +420,12 @@ Partial Class Form1
         Me.mnuFicAbrirDir.Name = "mnuFicAbrirDir"
         Me.mnuFicAbrirDir.Size = New System.Drawing.Size(318, 22)
         Me.mnuFicAbrirDir.Text = "Abrir &directorio"
+        '
+        'mnuFicAbrirCon
+        '
+        Me.mnuFicAbrirCon.Name = "mnuFicAbrirCon"
+        Me.mnuFicAbrirCon.Size = New System.Drawing.Size(318, 22)
+        Me.mnuFicAbrirCon.Text = "Abrir &con..."
         '
         'mnuFicSep2
         '
@@ -531,6 +543,7 @@ Partial Class Form1
         Me.cboTipoBuca.Name = "cboTipoBuca"
         Me.cboTipoBuca.Size = New System.Drawing.Size(85, 21)
         Me.cboTipoBuca.TabIndex = 3
+        Me.toolTip1.SetToolTip(Me.cboTipoBuca, "Si se selecciona AND u OR se puede indicar el segundo valor de 'cambiar'.")
         '
         'cboBuscar1
         '
@@ -747,18 +760,6 @@ Partial Class Form1
         Me.picBuscando.TabIndex = 7
         Me.picBuscando.TabStop = False
         Me.picBuscando.Visible = False
-        '
-        'mnuContextAbrirCon
-        '
-        Me.mnuContextAbrirCon.Name = "mnuContextAbrirCon"
-        Me.mnuContextAbrirCon.Size = New System.Drawing.Size(154, 22)
-        Me.mnuContextAbrirCon.Text = "Abrir &con..."
-        '
-        'mnuFicAbrirCon
-        '
-        Me.mnuFicAbrirCon.Name = "mnuFicAbrirCon"
-        Me.mnuFicAbrirCon.Size = New System.Drawing.Size(318, 22)
-        Me.mnuFicAbrirCon.Text = "Abrir &con..."
         '
         'Form1
         '

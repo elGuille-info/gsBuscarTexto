@@ -132,21 +132,19 @@ Puedes arrastrar ficheros con las extensiones que quieres usar y se añadirán a
 No se permitirá en: </value>
   </data>
   <data name="chkGuardarAutomaticamente.ToolTip" xml:space="preserve">
-    <value>SI ESTA OPCIÓN ESTÁ SELECCIONADA, al reemplazar se guardarán automáticamente los cambios en el fichero original, salvo que se indique hacer copia de seguridad.
-IMPORTANTE: usa esta opcion sólo si sabes con certeza que podrás reemplazar todos los ficheros afectados, el autor del programa no se hace responsable de los fallos que puedan ocurrir al utilizar esta opción.</value>
+    <value>SI ESTA OPCIÓN ESTÁ SELECCIONADA, al reemplazar se guardarán automáticamente los cambios en el fichero original.
+Si está marcada la opción hacer copia de seguridad, antes de guardar el nuevo contenido, se copiará el fichero original en el directorio de respaldo.
+Si no se marca esta opción, los ficheros modificados se abrirán en una nueva ventana.
+
+IMPORTANTE: usa esta opcion sólo si sabes con certeza que podrás reemplazar todos los ficheros afectados, 
+EL AUTOR DEL PROGRAMA NO SE HACE RESPONSABLE DE LOS FALLOS QUE PUEDAN OCURRIR AL USAR ESTA OPCIÓN.</value>
   </data>
   <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>221, 17</value>
   </metadata>
-  <data name="txtInfoShell.Text" xml:space="preserve">
-    <value>La opción 'Agregar menú contextual en las carpetas", permite utilizar este programa desde el menú contextual del explorador de Windows, abriendo el programa con las carpetas seleccionadas.
-
-Si está activada, al pulsar en Aceptar se añade esta aplicación al menú contextual.
-Si la opción está desactivada, se quita del menú contextual.
-
-Solo se puede cambiar el valor si se ejecuta la aplicación como administrador,
-</value>
-  </data>
+  <metadata name="statusStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>221, 17</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

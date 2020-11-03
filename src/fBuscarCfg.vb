@@ -1,7 +1,7 @@
 ﻿'------------------------------------------------------------------------------
 ' Configuración para gsBuscarTextos                                 (07/Feb/08)
 '
-' ©Guillermo 'guille' Som, 2008
+' ©Guillermo 'guille' Som, 2008, 2020
 '------------------------------------------------------------------------------
 Option Strict On
 Option Infer On
@@ -12,6 +12,7 @@ Imports System
 Imports System.Windows.Forms
 Imports System.Drawing
 Imports Microsoft.Win32
+Imports System.Collections.Generic
 
 Imports elGuille.BuscarTexto.elGuille.info.Util.Utilidades
 
@@ -20,35 +21,25 @@ Public Class fBuscarCfg
     Private m_ExtensionesNO As New System.Collections.Generic.List(Of String)
     Private m_DirCfg As String
     Private deshaciendo As Boolean = False
-    Private m_chkShell As Boolean
 
     Private Const programa As String = "gsBuscarTexto"
-    'Private Const shellKey As String = "SOFTWARE\Classes\Folder\Shell"
 
-    Private Sub fBuscarCfg_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-        chkShell.Enabled = EsAdministrador
+    Private Sub fBuscarCfg_Load() Handles MyBase.Load
 
         picReemplazar.Top = grbReemplazar.Top
         picReemplazar.Left = grbReemplazar.Left + 7
 
         ' Si es administrador
-        If chkShell.Enabled Then
+        If EsAdministrador Then 'If chkShell.Enabled Then
             picAdmin.Image = My.Resources.escudo16_OK
             picAdmin.ToolTipText = "Ejecutando como administrador"
-            txtInfoShell.Text &= "(ahora estás ejecutando como administrador)."
-            ' Las opciones de reemplazar                            (08/Feb/08)
-            'chkHacerCopiaReemplazar.Image = My.Resources.escudo16_OK
-            'chkPermitirReemplazar.Image = My.Resources.escudo16_OK
             picReemplazar.Image = My.Resources.escudo16_OK
             grbReemplazar.Enabled = True
             toolTip1.SetToolTip(picReemplazar, "")
         Else
             picAdmin.Image = My.Resources.escudo16_Exclamation
             picAdmin.ToolTipText = "No estás ejecutando como administrador."
-            txtInfoShell.Text &= "(ahora no estás ejecutando como administrador)."
             ' Las opciones de reemplazar                            (08/Feb/08)
-            'chkHacerCopiaReemplazar.Image = My.Resources.escudo16_Exclamation
-            'chkPermitirReemplazar.Image = My.Resources.escudo16_Exclamation
             picReemplazar.Image = My.Resources.escudo16_Exclamation
             grbReemplazar.Enabled = False
             toolTip1.SetToolTip(picReemplazar, "Estas opciones solo están disponibles cuando ejecutas la aplicación como administrador")
@@ -59,15 +50,6 @@ Public Class fBuscarCfg
         'toolTip1.SetToolTip(picReemplazar, "Estas opciones solo están disponibles cuando ejecutas la aplicación como administrador")
         LabelInfo.Text = picAdmin.ToolTipText
 
-        'If EstaEnRegistro().HasValue Then
-        '    chkShell.Checked = EstaEnRegistro().Value
-        'Else
-        '    chkShell.CheckState = CheckState.Indeterminate
-        '    toolTip1.SetToolTip(chkShell, "No se ha podido leer el valor del registro")
-        '    chkShell.Text &= " (error al leer clave)"
-        'End If
-
-        m_chkShell = chkShell.Checked
         m_DirCfg = My.Settings.dirConfig
 
         ' Las opciones de las extensiones                           (09/Feb/08)
@@ -78,26 +60,28 @@ Public Class fBuscarCfg
             m_ExtensionesNO.Add(s.ToLower.Trim)
         Next
 
-        ' TODO
-        ' Esta opción aún no está implementada                      (09/Feb/08)
-        ' Dejarlo habilitado para hacer pruebas
-        'My.Settings.chkPermitirReemplazar = False
-        'chkPermitirReemplazar.Enabled = False
-        toolTip1.SetToolTip(grbReemplazar, "La opción de reemplazar (cambiar texto) aún no está implementada")
+        ' Asignar los items del combo de abrir con                  (02/Nov/20)
 
+        Dim m_Cfg = Form1.m_Cfg
+        Dim cuantos = m_Cfg.GetValue("AbrirCon", "Count", 0)
+        cboAbrirCon.Items.Clear()
 
-        btnDeshacer_Click(Nothing, Nothing)
-        'optDirPersonalizado_CheckedChanged(Nothing, Nothing)
+        For i = 0 To cuantos - 1
+            Dim s = m_Cfg.GetValue("AbrirCon", $"Item_{i}", "")
+            If String.IsNullOrEmpty(s) Then Continue For
+            cboAbrirCon.Items.Add(s)
+        Next
+        If cboAbrirCon.Items.Contains(My.Settings.AbrirCon) = False Then
+            cboAbrirCon.Items.Add(My.Settings.AbrirCon)
+        End If
+        cboAbrirCon.Text = m_Cfg.GetValue("General", "AbrirCon", My.Settings.AbrirCon)
+
+        btnDeshacer_Click()
     End Sub
 
-    Private Sub btnAceptar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnAceptar.Click
-        'If EsAdministrador Then
-        '    CrearShell(chkShell.Checked)
-        'End If
-
+    Private Sub btnAceptar_Click() Handles btnAceptar.Click
         With My.Settings
             .usarMisDocumentos = optDirDocumentos.Checked
-            'directorioCfg()
             .dirConfig = Me.txtDirPersonal.Text
             ' Para las opciones de reemplazar                       (08/Feb/08)
             .chkPermitirReemplazar = Me.chkPermitirReemplazar.Checked
@@ -113,93 +97,37 @@ Public Class fBuscarCfg
             .chkExcluirDir = chkExcluirDir.Checked
             .txtExcluirDir = txtExcluirDir.Text
 
+            ' Guardar en el fichero de configuración                (02/Nov/20)
+            ' los valores indicados para AbrirCon
+
+            .AbrirCon = cboAbrirCon.Text
+
+            ' Usar el objeto compartido                             (02/Nov/20)
+            ' porque si no se cierra, estas asignaciones no prevalecen
+            Dim m_Cfg = Form1.m_Cfg
+
+            m_Cfg.SetValue("General", "AbrirCon", .AbrirCon)
+            Dim cuantos = -1
+            For i = 0 To cboAbrirCon.Items.Count - 1
+                Dim s = cboAbrirCon.Items(i).ToString
+                If String.IsNullOrEmpty(s) Then Continue For
+                cuantos += 1
+                m_Cfg.SetValue("AbrirCon", $"Item_{i}", s)
+            Next
+            m_Cfg.SetValue("AbrirCon", "Count", cuantos + 1)
+            m_Cfg.Save()
+
             .Save()
         End With
 
         Me.DialogResult = System.Windows.Forms.DialogResult.OK
     End Sub
 
-    Private Sub btnCancelar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancelar.Click
+    Private Sub btnCancelar_Click() Handles btnCancelar.Click
         Me.DialogResult = System.Windows.Forms.DialogResult.Cancel
     End Sub
 
-#Region " Acceso al registro de Windows "
-
-    'Friend Shared Sub CrearShell(ByVal crearClave As Boolean)
-    '    ' Del blog de Enrique Cortés:
-    '    ' http://ekort.blogspot.com/2007/02/acceso-directo-ms-dos-desde-carpetas.html
-    '    '
-    '    ' Crear una clave en:
-    '    ' HKEY_LOCAL_MACHINE\SOFTWARE\Classes\Folder\Shell
-    '    ' Crear el comando a ejecutar
-
-    '    ' Solo si se tienen privilegios de administrador
-    '    If EsAdministrador = False Then
-    '        Exit Sub
-    '    End If
-
-    '    Const progId As String = "Abrir con gsBuscarTexto"
-    '    Dim sPath As String = ChrW(34) & Application.ExecutablePath & ChrW(34) & " " &
-    '                          ChrW(34) & "%1" & ChrW(34) & " /sub /nobuscar /nofecha /noerror"
-
-    '    Try
-    '        Using rk As RegistryKey = Registry.LocalMachine.OpenSubKey(shellKey, True)
-    '            If rk Is Nothing Then
-    '                MessageBox.Show("No se puede abrir la clave del registro.",
-    '                                "Crear opción contextual",
-    '                                MessageBoxButtons.OK,
-    '                                MessageBoxIcon.Exclamation)
-    '            End If
-
-    '            If crearClave Then
-    '                Using rkc As RegistryKey = rk.CreateSubKey(programa)
-    '                    rkc.SetValue("", progId)
-    '                    Using rkc2 As RegistryKey = rkc.CreateSubKey("command")
-    '                        rkc2.SetValue("", sPath)
-    '                    End Using
-    '                End Using
-    '            Else
-    '                ' Quitar la clave
-    '                rk.DeleteSubKeyTree(programa)
-    '            End If
-    '        End Using
-    '    Catch ex As Exception
-    '        MessageBox.Show("Error al asignar el registro:" & vbCrLf &
-    '                        ex.Message,
-    '                        "Crear opción contextual",
-    '                        MessageBoxButtons.OK,
-    '                        MessageBoxIcon.Exclamation)
-    '    End Try
-    'End Sub
-
-    '''' <summary>
-    '''' Comprueba si ya está la clave del registro creada
-    '''' </summary>
-    '''' <returns>
-    '''' True si ya está registrado
-    '''' </returns>
-    '''' <remarks></remarks>
-    'Friend Function EstaEnRegistro() As Boolean?
-    '    Dim progId As String = ""
-    '    Dim sKey As String = shellKey & "\" & programa
-
-    '    Try
-    '        Using rk As RegistryKey = Registry.LocalMachine.OpenSubKey(sKey)
-    '            If rk IsNot Nothing Then
-    '                progId = rk.GetValue("").ToString
-    '                rk.Close()
-    '            End If
-    '        End Using
-    '    Catch ex As Exception
-    '        progId = "Error"
-    '    End Try
-
-    '    Return Not String.IsNullOrEmpty(progId)
-    'End Function
-
-#End Region
-
-    Private Sub btnRestaurarVentana_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnRestaurarVentana.Click
+    Private Sub btnRestaurarVentana_Click() Handles btnRestaurarVentana.Click
         ' w, h 660; 541'515
         With My.Settings
             .Size = New Size(660, 541)
@@ -207,7 +135,7 @@ Public Class fBuscarCfg
         End With
     End Sub
 
-    Private Sub btnExaminar_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnExaminar.Click
+    Private Sub btnExaminar_Click() Handles btnExaminar.Click
         Dim fbd As New FolderBrowserDialog
 
         Dim dirCfg As String = Me.txtDirPersonal.Text
@@ -250,9 +178,7 @@ Public Class fBuscarCfg
         End With
     End Sub
 
-    Private Sub optDirPersonalizado_CheckedChanged(ByVal sender As Object, _
-                                                   ByVal e As EventArgs) _
-                                                   Handles optDirPersonalizado.CheckedChanged
+    Private Sub optDirPersonalizado_CheckedChanged() Handles optDirPersonalizado.CheckedChanged
         If deshaciendo Then Exit Sub
 
         Me.txtDirPersonal.Enabled = optDirPersonalizado.Checked
@@ -266,8 +192,8 @@ Public Class fBuscarCfg
         datosCambiados()
     End Sub
 
-    Private Sub optDirProg_CheckedChanged(ByVal sender As Object, _
-                                          ByVal e As EventArgs) _
+    Private Sub optDirProg_CheckedChanged(sender As Object,
+                                          e As EventArgs) _
                                           Handles optDirDocumentos.CheckedChanged
         If deshaciendo Then Exit Sub
 
@@ -287,13 +213,16 @@ Public Class fBuscarCfg
         Dim cambiados As Boolean = False
 
         With My.Settings
+            If cboAbrirCon.Text <> My.Settings.AbrirCon Then
+                cambiados = True
+            End If
             If optDirDocumentos.Checked <> .usarMisDocumentos Then
                 cambiados = True
             End If
             If optDirPersonalizado.Checked = .usarMisDocumentos Then
                 cambiados = True
             End If
-            If Me.txtDirPersonal.Text <> m_DirCfg Then '.dirConfig Then
+            If Me.txtDirPersonal.Text <> m_DirCfg Then
                 cambiados = True
             End If
             If Me.chkPermitirReemplazar.Checked <> .chkPermitirReemplazar Then
@@ -319,9 +248,6 @@ Public Class fBuscarCfg
             End If
 
         End With
-        If chkShell.Checked <> m_chkShell Then
-            cambiados = True
-        End If
 
         btnDeshacer.Enabled = cambiados
         btnAceptar.Enabled = cambiados
@@ -360,16 +286,13 @@ Public Class fBuscarCfg
             End If
         End With
 
-        'Me.txtDirPersonal.Text = dirCfg
     End Sub
 
-
-    Private Sub btnDeshacer_Click(ByVal sender As Object, _
-                                  ByVal e As EventArgs) _
-                                  Handles btnDeshacer.Click
+    Private Sub btnDeshacer_Click() Handles btnDeshacer.Click
         deshaciendo = True
 
         With My.Settings
+            cboAbrirCon.Text = .AbrirCon
             optDirDocumentos.Checked = .usarMisDocumentos
             If .usarMisDocumentos Then
                 optDirDocumentos.Checked = True
@@ -395,26 +318,20 @@ Public Class fBuscarCfg
             txtExcluirDir.Text = .txtExcluirDir
 
         End With
-        chkShell.Checked = m_chkShell
 
         btnDeshacer.Enabled = False
         btnAceptar.Enabled = False
 
         deshaciendo = False
 
-        chkPermitirReemplazar_CheckedChanged(Nothing, Nothing)
+        chkPermitirReemplazar_CheckedChanged()
     End Sub
 
-    Private Sub chkGenéricos_CheckedChanged(ByVal sender As Object,
-                                            ByVal e As EventArgs) _
-                                        Handles chkShell.CheckedChanged,
-                                                chkGuardarAutomaticamente.CheckedChanged
+    Private Sub chkGuardarAutomaticamente_CheckedChanged() Handles chkGuardarAutomaticamente.CheckedChanged
         datosCambiados()
     End Sub
 
-    Private Sub chkHacerCopia_CheckedChanged(ByVal sender As Object, _
-                                             ByVal e As EventArgs) _
-                                             Handles chkHacerCopiaReemplazar.CheckedChanged
+    Private Sub chkHacerCopia_CheckedChanged() Handles chkHacerCopiaReemplazar.CheckedChanged
         If deshaciendo Then Exit Sub
 
         Dim b = chkHacerCopiaReemplazar.Checked
@@ -425,9 +342,7 @@ Public Class fBuscarCfg
         datosCambiados()
     End Sub
 
-    Private Sub chkPermitirReemplazar_CheckedChanged(ByVal sender As Object, _
-                                                     ByVal e As EventArgs) _
-                                                     Handles chkPermitirReemplazar.CheckedChanged
+    Private Sub chkPermitirReemplazar_CheckedChanged() Handles chkPermitirReemplazar.CheckedChanged
         If deshaciendo Then Exit Sub
 
         Dim b = chkPermitirReemplazar.Checked
@@ -447,9 +362,7 @@ Public Class fBuscarCfg
         datosCambiados()
     End Sub
 
-    Private Sub txtDirBackup_TextChanged(ByVal sender As Object, _
-                                         ByVal e As EventArgs) _
-                                         Handles txtDirBackupReemplazar.TextChanged, _
+    Private Sub txtDirBackup_TextChanged() Handles txtDirBackupReemplazar.TextChanged,
                                                  txtExtensiones.TextChanged, txtDirPersonal.TextChanged
         datosCambiados()
     End Sub
@@ -471,8 +384,6 @@ Public Class fBuscarCfg
             Dim txtFic As TextBox = TryCast(sender, TextBox)
             If txtFic Is Nothing Then Exit Sub
             txtFic.Text = CType(e.Data.GetData("FileDrop", True), String())(0)
-
-            'datosCambiados()
         End If
     End Sub
 
@@ -523,9 +434,7 @@ Public Class fBuscarCfg
         Return sb.ToString
     End Function
 
-    Private Sub btnExaminarBackup_Click(ByVal sender As Object, _
-                                        ByVal e As EventArgs) _
-                                        Handles btnExaminarBackup.Click
+    Private Sub btnExaminarBackup_Click() Handles btnExaminarBackup.Click
         Dim fbd As New FolderBrowserDialog
         With fbd
             .Description = "Selecciona el directorio para la copia de seguridad al reemplazar textos"
@@ -538,14 +447,26 @@ Public Class fBuscarCfg
         End With
     End Sub
 
-    Private Sub chkExcluirDir_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkExcluirDir.CheckedChanged
+    Private Sub chkExcluirDir_CheckedChanged() Handles chkExcluirDir.CheckedChanged
         datosCambiados()
     End Sub
 
-    Private Sub txtExcluirDir_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtExcluirDir.TextChanged
+    Private Sub txtExcluirDir_TextChanged() Handles txtExcluirDir.TextChanged
         If vb.Len(txtExcluirDir.Text) = 0 Then
             chkExcluirDir.Checked = False
         End If
+        datosCambiados()
+    End Sub
+
+    Private Sub cboAbrirCon_Validating() Handles cboAbrirCon.Validating
+        Dim s = cboAbrirCon.Text
+        If String.IsNullOrEmpty(s) Then Return
+        If Not cboAbrirCon.Items.Contains(s) Then
+            cboAbrirCon.Items.Add(s)
+        End If
+    End Sub
+
+    Private Sub cboAbrirCon_TextChanged(sender As Object, e As EventArgs) Handles cboAbrirCon.TextChanged
         datosCambiados()
     End Sub
 End Class

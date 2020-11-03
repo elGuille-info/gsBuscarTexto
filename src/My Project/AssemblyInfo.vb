@@ -9,8 +9,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("gsBuscarTexto")>
-<Assembly: AssemblyDescription("Buscar ficheros (una o varias especificaciones) en uno o varios directorios, también permite buscar texto en esos ficheros.  Revisión del 1/Nov/2020")>
-<Assembly: AssemblyCompany("elGuille -Nerja")> 
+<Assembly: AssemblyDescription("Buscar ficheros (una o varias especificaciones) en uno o varios directorios, también permite buscar texto en esos ficheros.  Revisión del 3/Nov/2020")>
+<Assembly: AssemblyCompany("elGuille")>
 <Assembly: AssemblyProduct("gsBuscarTexto")>
 <Assembly: AssemblyCopyright("©Guillermo 'guille' Som, 2007-2008, 2012, 2018, 2020")>
 <Assembly: AssemblyTrademark("Microsoft Visual Basic 2019 (.NET 4.8)")>
@@ -32,4 +32,4 @@ Imports System.Runtime.InteropServices
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
 <Assembly: AssemblyVersion("3.0.0.0")>
-<Assembly: AssemblyFileVersion("3.0.0.8")>
+<Assembly: AssemblyFileVersion("3.0.0.12")>

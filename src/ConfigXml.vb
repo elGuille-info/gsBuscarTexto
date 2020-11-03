@@ -56,9 +56,9 @@ Namespace elGuille.info.Util
         '
         ' Mejor usar constantes                                 (15/Ene/07)
         ' y que estén al principio del fichero para tenerlas a mano
-        Const revDate As String = "Sat, 12 Jan 2008 18:31:52 GMT"
-        Const cfgInfo As String = "Generado con ConfigXml para Visual Basic 2008"
-        Const copyGuille As String = "©Guillermo 'guille' Som, 2005-2008"
+        Const revDate As String = "Tue, 02 Nov 2020 18:49:00 GMT"
+        Const cfgInfo As String = "Generado con ConfigXml para Visual Basic 2019"
+        Const copyGuille As String = "©Guillermo 'guille' Som, 2005-2020"
 
 
         ''' <summary>

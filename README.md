@@ -12,4 +12,4 @@ He quitado todo lo referente al acceso al registro de Windows, ya que me estuvo 
 En <b>Releases</b> tienes el ejecutable (dentro de un zip) listo para usar (si tienes instalado .NET Framework 4.8)<br>
 <br>
 <br>
-Actualizado el 1 de noviembre de 2020 a eso de las 21:37 GMT+1
+Actualizado el 3 de noviembre de 2020 a eso de las 20:25 GMT+1

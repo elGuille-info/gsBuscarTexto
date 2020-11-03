@@ -274,19 +274,13 @@ Public Class BuscarReemplazar
     ''' Solo se permite un máximo de dos palabras en buscar o poner
     ''' (el valor indicado en <seealso cref="MaximoPalabrasBuscarReemplazar">MaximoPalabrasBuscarReemplazar</seealso>).
     ''' </summary>
-    ''' <param name="texto"></param>
-    ''' <param name="buscar">
-    ''' Array con las palabras a buscar
-    ''' </param>
-    ''' <param name="poner">
-    ''' Array con las palabras a poner
-    ''' </param>
-    ''' <param name="tipoBusqueda"></param>
-    ''' <param name="ignorarMays"></param>
-    ''' <param name="esCompleta"></param>
-    ''' <returns>
-    ''' El texto, modificado o no
-    ''' </returns>
+    ''' <param name="texto">El texto donde se hará la búsqueda</param>
+    ''' <param name="buscar">Array con las palabras a buscar</param>
+    ''' <param name="poner">Array con las palabras a poner</param>
+    ''' <param name="tipoBusqueda">Un valor del tipo <see cref="TiposBusqueda"/></param>
+    ''' <param name="ignorarMays">Si la comparación es sin distinguir mayúsculas de minúscuals</param>
+    ''' <param name="esCompleta">Si se debe buscar palabra completa</param>
+    ''' <returns>El texto, modificado o no</returns>
     ''' <remarks></remarks>
     Public Shared Function ReemplazaPalabras(ByVal texto As String, _
                                              ByVal buscar() As String, _
@@ -345,6 +339,7 @@ Public Class BuscarReemplazar
         Dim posiciones As New System.Collections.Generic.List(Of Integer)
 
         ' Recorrer todas las palabras de buscar
+        ' si la primera no está, no aceptar este fichero            (03/Nov/20)
         For i As Integer = 0 To n - 1
             Dim sBusc As String = buscar(i)
             Dim pos As Integer = -1
@@ -357,8 +352,23 @@ Public Class BuscarReemplazar
                     pos = texto.ToString.IndexOf(sBusc, StringComparison.Ordinal)
                 End If
             End If
+            ' si la primera no se encuentra y NO es tipoBusqueda OR (03/Nov/20)
+            ' no hay que reemplazar
+            ' Ya que:
+            ' Si es SoloUno debe estar la primera coincidencia
+            ' Si es And     deben estar las 2 coincidencias
+            ' Si es Not     debe estar al menos la primera coincidencia
+            ' Si es Or      puede estar la primera o la segunda
+            If i = 0 AndAlso pos = -1 AndAlso tipoBusqueda <> TiposBusqueda.Or Then
+                posiciones.Clear()
+                Exit For
+            End If
             posiciones.Add(pos)
         Next
+
+        If posiciones.Count = 0 Then
+            Return texto
+        End If
 
         '----------------------------------------------------------------------
         ' Las acciones a realizar son:
@@ -390,6 +400,17 @@ Public Class BuscarReemplazar
         If tipoBusqueda = TiposBusqueda.And AndAlso cuantasMal > 0 Then
             Return texto
         End If
+        ' Si se busca NOT debe haber 1 mal y 1 bien                 (03/Nov/20)
+        ' pero la primera debe ser "bien" (se comprueba más arriba)
+        If tipoBusqueda = TiposBusqueda.Not AndAlso cuantasMal <> 1 Then
+            Return texto
+        End If
+        ' Si es soloUno solo debe haber una coincidencia            (03/Nov/20)
+        ' y ninguna mal, pero esto último no comprobarlo
+        If tipoBusqueda = TiposBusqueda.SoloUno AndAlso posiciones.Count <> 1 Then
+            Return texto
+        End If
+        ' Si todas están mal, salir
         If cuantasMal = posiciones.Count Then
             Return texto
         End If
@@ -439,6 +460,15 @@ Public Class BuscarReemplazar
                     Return ReemplazaPalabras(texto.ToString, buscar, poner, tipoBusqueda, ignorarMays, esCompleta)
                 End If
             End If
+
+            ' Si se indica NOT, que la segunda palabara de buscar no esté
+        ElseIf tipoBusqueda = TiposBusqueda.Not Then
+            ' solo debe haber 1 en poner, si hay más se ignora la segunda
+            For i As Integer = 0 To buscar.Length - 1
+                If posiciones(i) < 0 Then Continue For
+                texto = texto.Substring(0, posiciones(i)) & poner(0) & texto.Substring(posiciones(i) + buscar(i).Length)
+            Next
+            Return ReemplazaPalabras(texto.ToString, buscar, poner, tipoBusqueda, ignorarMays, esCompleta)
 
             ' Si solo se indica una palabra a buscar (SoloUno)
         Else

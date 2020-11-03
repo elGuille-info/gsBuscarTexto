@@ -24,7 +24,6 @@ Partial Class fBuscarCfg
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(fBuscarCfg))
-        Me.chkShell = New System.Windows.Forms.CheckBox()
         Me.toolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.chkPermitirReemplazar = New System.Windows.Forms.CheckBox()
         Me.LabelExtensiones = New System.Windows.Forms.Label()
@@ -37,8 +36,8 @@ Partial Class fBuscarCfg
         Me.picAdmin = New System.Windows.Forms.ToolStripStatusLabel()
         Me.btnAceptar = New System.Windows.Forms.Button()
         Me.btnCancelar = New System.Windows.Forms.Button()
-        Me.txtInfoShell = New System.Windows.Forms.TextBox()
-        Me.grbShell = New System.Windows.Forms.GroupBox()
+        Me.grbAbrirCon = New System.Windows.Forms.GroupBox()
+        Me.cboAbrirCon = New System.Windows.Forms.ComboBox()
         Me.btnRestaurarVentana = New System.Windows.Forms.Button()
         Me.grbFicCfg = New System.Windows.Forms.GroupBox()
         Me.btnExaminar = New System.Windows.Forms.Button()
@@ -56,26 +55,12 @@ Partial Class fBuscarCfg
         Me.txtExcluirDir = New System.Windows.Forms.TextBox()
         Me.panelBotones.SuspendLayout()
         Me.statusStrip1.SuspendLayout()
-        Me.grbShell.SuspendLayout()
+        Me.grbAbrirCon.SuspendLayout()
         Me.grbFicCfg.SuspendLayout()
         Me.grbReemplazar.SuspendLayout()
         CType(Me.picReemplazar, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.grbDirExcluir.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'chkShell
-        '
-        Me.chkShell.AutoSize = True
-        Me.chkShell.Enabled = False
-        Me.chkShell.Location = New System.Drawing.Point(12, 22)
-        Me.chkShell.Margin = New System.Windows.Forms.Padding(6)
-        Me.chkShell.Name = "chkShell"
-        Me.chkShell.Size = New System.Drawing.Size(281, 17)
-        Me.chkShell.TabIndex = 0
-        Me.chkShell.Text = "Agregar menú contextual en las carpetas de Windows"
-        Me.toolTip1.SetToolTip(Me.chkShell, " Añadir 'Buscar' como opción al menú contextual de las carpetas y unidades (solo " &
-        "como administrador)")
-        Me.chkShell.UseVisualStyleBackColor = True
         '
         'chkPermitirReemplazar
         '
@@ -138,7 +123,7 @@ Partial Class fBuscarCfg
         Me.panelBotones.Controls.Add(Me.btnAceptar)
         Me.panelBotones.Controls.Add(Me.btnCancelar)
         Me.panelBotones.Dock = System.Windows.Forms.DockStyle.Bottom
-        Me.panelBotones.Location = New System.Drawing.Point(0, 573)
+        Me.panelBotones.Location = New System.Drawing.Point(0, 464)
         Me.panelBotones.Name = "panelBotones"
         Me.panelBotones.Size = New System.Drawing.Size(562, 53)
         Me.panelBotones.TabIndex = 5
@@ -201,40 +186,36 @@ Partial Class fBuscarCfg
         Me.btnCancelar.Text = "Cancelar"
         Me.btnCancelar.UseVisualStyleBackColor = True
         '
-        'txtInfoShell
+        'grbAbrirCon
         '
-        Me.txtInfoShell.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.grbAbrirCon.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.txtInfoShell.BackColor = System.Drawing.SystemColors.Info
-        Me.txtInfoShell.Location = New System.Drawing.Point(6, 49)
-        Me.txtInfoShell.Margin = New System.Windows.Forms.Padding(3, 4, 3, 3)
-        Me.txtInfoShell.Multiline = True
-        Me.txtInfoShell.Name = "txtInfoShell"
-        Me.txtInfoShell.ReadOnly = True
-        Me.txtInfoShell.Size = New System.Drawing.Size(527, 110)
-        Me.txtInfoShell.TabIndex = 1
-        Me.txtInfoShell.TabStop = False
-        Me.txtInfoShell.Text = resources.GetString("txtInfoShell.Text")
+        Me.grbAbrirCon.Controls.Add(Me.cboAbrirCon)
+        Me.grbAbrirCon.Location = New System.Drawing.Point(12, 12)
+        Me.grbAbrirCon.Name = "grbAbrirCon"
+        Me.grbAbrirCon.Size = New System.Drawing.Size(539, 56)
+        Me.grbAbrirCon.TabIndex = 0
+        Me.grbAbrirCon.TabStop = False
+        Me.grbAbrirCon.Text = "Ficheros para Abrir con..."
         '
-        'grbShell
+        'cboAbrirCon
         '
-        Me.grbShell.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.grbShell.Controls.Add(Me.chkShell)
-        Me.grbShell.Controls.Add(Me.txtInfoShell)
-        Me.grbShell.Location = New System.Drawing.Point(12, 12)
-        Me.grbShell.Name = "grbShell"
-        Me.grbShell.Size = New System.Drawing.Size(539, 165)
-        Me.grbShell.TabIndex = 0
-        Me.grbShell.TabStop = False
-        Me.grbShell.Text = "Menú contextual de Windows"
+        Me.cboAbrirCon.FormattingEnabled = True
+        Me.cboAbrirCon.Items.AddRange(New Object() {"""E:\gsCodigo_00\Visual Studio\net core\gsEvaluarColorearCodigoNET\gsEvaluarColore" &
+                "arCodigoNET vb\bin\Debug\net5.0-windows\gsEvaluarColorearCodigoNET.exe""", """E:\ISOs guilleAcer5930\Instalar (registrados)\TextPad\TextPad portable\TextPad.e" &
+                "xe"""})
+        Me.cboAbrirCon.Location = New System.Drawing.Point(12, 19)
+        Me.cboAbrirCon.Name = "cboAbrirCon"
+        Me.cboAbrirCon.Size = New System.Drawing.Size(520, 21)
+        Me.cboAbrirCon.TabIndex = 0
+        Me.cboAbrirCon.Text = """E:\gsCodigo_00\Visual Studio\net core\gsEvaluarColorearCodigoNET\gsEvaluarColore" &
+    "arCodigoNET vb\bin\Debug\net5.0-windows\gsEvaluarColorearCodigoNET.exe"""
         '
         'btnRestaurarVentana
         '
         Me.btnRestaurarVentana.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnRestaurarVentana.AutoSize = True
-        Me.btnRestaurarVentana.Location = New System.Drawing.Point(12, 541)
+        Me.btnRestaurarVentana.Location = New System.Drawing.Point(12, 432)
         Me.btnRestaurarVentana.Name = "btnRestaurarVentana"
         Me.btnRestaurarVentana.Size = New System.Drawing.Size(243, 23)
         Me.btnRestaurarVentana.TabIndex = 4
@@ -249,7 +230,7 @@ Partial Class fBuscarCfg
         Me.grbFicCfg.Controls.Add(Me.txtDirPersonal)
         Me.grbFicCfg.Controls.Add(Me.optDirPersonalizado)
         Me.grbFicCfg.Controls.Add(Me.optDirDocumentos)
-        Me.grbFicCfg.Location = New System.Drawing.Point(12, 186)
+        Me.grbFicCfg.Location = New System.Drawing.Point(12, 77)
         Me.grbFicCfg.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.grbFicCfg.Name = "grbFicCfg"
         Me.grbFicCfg.Size = New System.Drawing.Size(538, 76)
@@ -315,7 +296,7 @@ Partial Class fBuscarCfg
         Me.grbReemplazar.Controls.Add(Me.txtDirBackupReemplazar)
         Me.grbReemplazar.Controls.Add(Me.chkHacerCopiaReemplazar)
         Me.grbReemplazar.Controls.Add(Me.chkPermitirReemplazar)
-        Me.grbReemplazar.Location = New System.Drawing.Point(12, 271)
+        Me.grbReemplazar.Location = New System.Drawing.Point(12, 162)
         Me.grbReemplazar.Margin = New System.Windows.Forms.Padding(3, 6, 3, 3)
         Me.grbReemplazar.Name = "grbReemplazar"
         Me.grbReemplazar.Size = New System.Drawing.Size(538, 163)
@@ -336,7 +317,7 @@ Partial Class fBuscarCfg
         Me.txtExtensiones.Size = New System.Drawing.Size(441, 41)
         Me.txtExtensiones.TabIndex = 2
         Me.txtExtensiones.Text = ".txt; .ini; .vb; .cs; .c; .h; .hpp; .cpp; .bas; .frm; .cls; .sql; .js; .aspx; .as" &
-    "p; .htm; .pl; .php; .xml; .xaml; .sln; .vbp; .vbproj; .csproj"
+    "p; .htm; .html; .pl; .php; .xml; .xaml; .sln; .vbp; .vbproj; .csproj"
         '
         'LabelDirBackup
         '
@@ -383,6 +364,8 @@ Partial Class fBuscarCfg
         Me.chkHacerCopiaReemplazar.TabIndex = 3
         Me.chkHacerCopiaReemplazar.Text = "Hacer copia de seguridad antes de reemplazar"
         Me.chkHacerCopiaReemplazar.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText
+        Me.toolTip1.SetToolTip(Me.chkHacerCopiaReemplazar, "Si no se indica 'Guardar los cambios automáticamente' los ficheros modificados se" &
+        " abrirán en ventana aparte, " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "pero no se guardarán los cambios.")
         Me.chkHacerCopiaReemplazar.UseVisualStyleBackColor = False
         '
         'picReemplazar
@@ -401,7 +384,7 @@ Partial Class fBuscarCfg
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grbDirExcluir.Controls.Add(Me.txtExcluirDir)
         Me.grbDirExcluir.Controls.Add(Me.chkExcluirDir)
-        Me.grbDirExcluir.Location = New System.Drawing.Point(12, 440)
+        Me.grbDirExcluir.Location = New System.Drawing.Point(12, 331)
         Me.grbDirExcluir.Name = "grbDirExcluir"
         Me.grbDirExcluir.Size = New System.Drawing.Size(538, 91)
         Me.grbDirExcluir.TabIndex = 3
@@ -428,19 +411,19 @@ Partial Class fBuscarCfg
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancelar
-        Me.ClientSize = New System.Drawing.Size(562, 626)
+        Me.ClientSize = New System.Drawing.Size(562, 517)
         Me.Controls.Add(Me.grbDirExcluir)
         Me.Controls.Add(Me.picReemplazar)
         Me.Controls.Add(Me.grbReemplazar)
         Me.Controls.Add(Me.grbFicCfg)
         Me.Controls.Add(Me.btnRestaurarVentana)
-        Me.Controls.Add(Me.grbShell)
+        Me.Controls.Add(Me.grbAbrirCon)
         Me.Controls.Add(Me.panelBotones)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
-        Me.MinimumSize = New System.Drawing.Size(520, 648)
+        Me.MinimumSize = New System.Drawing.Size(520, 555)
         Me.Name = "fBuscarCfg"
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
@@ -448,8 +431,7 @@ Partial Class fBuscarCfg
         Me.panelBotones.ResumeLayout(False)
         Me.statusStrip1.ResumeLayout(False)
         Me.statusStrip1.PerformLayout()
-        Me.grbShell.ResumeLayout(False)
-        Me.grbShell.PerformLayout()
+        Me.grbAbrirCon.ResumeLayout(False)
         Me.grbFicCfg.ResumeLayout(False)
         Me.grbFicCfg.PerformLayout()
         Me.grbReemplazar.ResumeLayout(False)
@@ -461,16 +443,14 @@ Partial Class fBuscarCfg
         Me.PerformLayout()
 
     End Sub
-    Private WithEvents chkShell As System.Windows.Forms.CheckBox
     Private WithEvents toolTip1 As System.Windows.Forms.ToolTip
     Private WithEvents btnAceptar As System.Windows.Forms.Button
     Private WithEvents btnCancelar As System.Windows.Forms.Button
     Private WithEvents panelBotones As System.Windows.Forms.Panel
-    Private WithEvents txtInfoShell As System.Windows.Forms.TextBox
     Private WithEvents picAdmin As System.Windows.Forms.ToolStripStatusLabel
     Private WithEvents statusStrip1 As System.Windows.Forms.StatusStrip
     Private WithEvents LabelInfo As System.Windows.Forms.ToolStripStatusLabel
-    Private WithEvents grbShell As System.Windows.Forms.GroupBox
+    Private WithEvents grbAbrirCon As System.Windows.Forms.GroupBox
     Private WithEvents btnRestaurarVentana As System.Windows.Forms.Button
     Private WithEvents grbFicCfg As System.Windows.Forms.GroupBox
     Private WithEvents btnExaminar As System.Windows.Forms.Button
@@ -491,4 +471,5 @@ Partial Class fBuscarCfg
     Private WithEvents txtExcluirDir As System.Windows.Forms.TextBox
     Private WithEvents chkExcluirDir As System.Windows.Forms.CheckBox
     Private WithEvents chkGuardarAutomaticamente As System.Windows.Forms.CheckBox
+    Private WithEvents cboAbrirCon As System.Windows.Forms.ComboBox
 End Class

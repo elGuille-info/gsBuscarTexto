@@ -24,6 +24,7 @@
 '       /nosub,     Desactiva la opción de buscar en subdirectorios
 '       /noerror,   Activa la opción de ignorar errores (predeterminado con el menú contextual)
 '       /error,     Desactiva la opción de ignorar errores
+'   Las dos del registro ya no se usan                              (02/Nov/20)
 '       /reg+,      Registra el programa en el menú contextual del explorador de Windows
 '       /reg-       Quita el programa del menú contextual del explorador de Windows
 '   -Añadir una opción al menú contextual del explorador de Windows
@@ -90,6 +91,14 @@
 ' v3.0.0.5              Añado AbrirCon al menú contextual y menú fichero
 ' v3.0.0.6  (30/Oct/20) Para AbrirCon a los ficheros los pongo entre comillas dobles
 ' v3.0.0.7              Al guardar el tamaño de la ventana por error usaba GetValue en vez de SetValue.
+' v3.0.0.8  (01/Nov/20) Quito lo referente al registro de Windows
+' v3.0.0.9  (02/Nov/20) Cambio el form de configuración y pongo que se indique ahí el fichero de AbrirCon
+' v3.0.0.10             Varios cambios para asignar bien AbrirCon, cambio el formato de los ficheros a UTF8
+'                       y al guardar copia de seguridad se creará un directorio para cada fichero en el formato:
+'                       Si el original está en E:\elGuille.info\vb\API será: .\elguille.info_vb_API\
+' v3.0.0.11             El formato de leer y escribir en Default
+' v3.0.0.12             Comprobaciones para cuando se usa tipoBusqueda y reemplazar
+
 '
 '------------------------------------------------------------------------------
 Option Strict On
@@ -118,8 +127,10 @@ Public Class Form1
 
     '' Para el nombre de la aplicación (como campo compartido)       (09/Feb/08)
     'Friend Shared NombreAplicacion As String
+
     ' Para los datos de configuración en un fichero
-    Private m_Cfg As ConfigXml
+    Friend Shared m_Cfg As ConfigXml
+
     '' Campo compartido para saber si se ejecuta como administrador
     'Friend Shared EsAdministrador As Boolean
 
@@ -173,6 +184,8 @@ Public Class Form1
             .chkPoner = chkPoner.Checked
             ' Nueva opción v3.0.0.0                                 (28/Oct/20)
             .chkMultiple = chkMultiple.Checked
+            ' El fichero a usar con AbrirCon                        (02/Nov/20)
+            '.AbrirCon = sAbrirCon
 
             .distinguirMay = chkDistinguirMay.Checked
             ' Nuevas opciones                                       (07/Feb/08)
@@ -233,6 +246,9 @@ Public Class Form1
             End Try
             ' Nueva opción v3.0.0.0                                 (28/Oct/20)
             m_Cfg.SetValue("General", "chkSiNoTiene", .chkMultiple)
+            ' El fichero a usar con AbrirCon                        (02/Nov/20)
+            m_Cfg.SetValue("General", "AbrirCon", .AbrirCon)
+
             m_Cfg.SetValue("General", "chkBuscarMismaLinea", .chkBuscarMismaLinea)
             m_Cfg.SetValue("General", "chkBuscarTexto", .chkBuscarTexto)
             m_Cfg.SetValue("General", "chkFecha", .chkFecha)
@@ -321,6 +337,9 @@ Public Class Form1
 
             ' Nueva opción v3.0.0.0                                 (28/Oct/20)
             .chkMultiple = m_Cfg.GetValue("General", "chkSiNoTiene", .chkMultiple)
+            ' El fichero a usar con AbrirCon                        (02/Nov/20)
+            .AbrirCon = m_Cfg.GetValue("General", "AbrirCon", .AbrirCon)
+            sAbrirCon = .AbrirCon
             .chkBuscarMismaLinea = m_Cfg.GetValue("General", "chkBuscarMismaLinea", .chkBuscarMismaLinea)
             .chkBuscarTexto = m_Cfg.GetValue("General", "chkBuscarTexto", .chkBuscarTexto)
             .chkFecha = m_Cfg.GetValue("General", "chkFecha", .chkFecha)
@@ -381,7 +400,6 @@ Public Class Form1
                 m_ExcluirDir.Add(s.ToLower.Trim)
             Next
 
-
             ' Asignar los elementos de los combos por medio de las propiedades
             ' definidas en el control de usuario
             directorios = .ultimosDirectorios
@@ -397,33 +415,11 @@ Public Class Form1
             ' tener en cuenta.
             '----------------------------------------------------------
 
-            '' Esta opción aún no está implementada
-            '.expanderBuscarExpanded = False
-            '.chkBuscarTexto = False
-            '.textoBuscar1 = ""
-            '.textoBuscar2 = ""
-            'OpcionesBuscar1.chkBuscar.Enabled= .chkBuscarTexto
-
-            '' TODO
-            '' Esta opción aún no está implementada
-            '.chkPoner = False
-            '.chkPermitirReemplazar = False
             ' Reemplazar solo se permite en modo administrador      (10/Feb/08)
             If EsAdministrador = False Then
                 .chkPoner = False
                 .chkPermitirReemplazar = False
             End If
-            '
-            'chkPoner.Tag = False
-            '.textoPoner1 = ""
-            '.textoPoner2 = ""
-            'chkPoner.Enabled = .chkPoner
-
-
-            '' Esta opción aún no está implementada
-            '.chkFecha = False
-            'chkFecha.Enabled = .chkFecha
-
 
             ' Asignamos el resto de opciones
             If ConLineaComandos = False Then
@@ -538,53 +534,6 @@ Public Class Form1
         End If
     End Sub
 
-    'Friend Shared Sub EscribirEventLog(ByVal msg As String, ByVal tipo As EventLogEntryType)
-    '    ' Solo si se tienen permisos de administrador
-    '    If EsAdministrador Then
-    '        EventLog.WriteEntry(NombreAplicacion, _
-    '                            msg & _
-    '                            vbCrLf & "v" & FileVersion & " " & DateTime.Now.ToString, _
-    '                            tipo)
-    '        ''
-    '        'Dim log As EventLog = New EventLog()
-    '        'log.Source = NombreAplicacion
-    '        'log.Log = "Application"
-    '        'log.WriteEntry(msg & vbCrLf & "v" & FileVersion & " " & DateTime.Now.ToString, tipo)
-    '    Else
-    '        Dim tipoVB As TraceEventType = TraceEventType.Information
-    '        Select Case tipo
-    '            Case EventLogEntryType.Error
-    '                tipoVB = TraceEventType.Error
-    '            Case EventLogEntryType.Information
-    '                tipoVB = TraceEventType.Information
-    '            Case EventLogEntryType.Warning
-    '                tipoVB = TraceEventType.Warning
-    '            Case Else
-    '                tipoVB = TraceEventType.Information
-    '        End Select
-    '        My.Application.Log.WriteEntry(msg & _
-    '                                      vbCrLf & "v" & FileVersion & " " & DateTime.Now.ToString, _
-    '                                      tipoVB)
-    '    End If
-
-    '    '' Para probar en XP, etc.
-    '    'Dim tipoVB As TraceEventType = TraceEventType.Information
-    '    'Select Case tipo
-    '    '    Case EventLogEntryType.Error
-    '    '        tipoVB = TraceEventType.Error
-    '    '    Case EventLogEntryType.Information
-    '    '        tipoVB = TraceEventType.Information
-    '    '    Case EventLogEntryType.Warning
-    '    '        tipoVB = TraceEventType.Warning
-    '    '    Case Else
-    '    '        tipoVB = TraceEventType.Information
-    '    'End Select
-    '    'My.Application.Log.WriteEntry(msg & _
-    '    '                              vbCrLf & "v" & FileVersion & " " & DateTime.Now.ToString, _
-    '    '                              tipoVB)
-    'End Sub
-
-
     ''' <summary>
     ''' Al cerrarse el formulario principal,
     ''' se guadan los valores de configuración.
@@ -613,6 +562,8 @@ Public Class Form1
                            Handles MyBase.Load
         ' Inicialmente centrar el formulario                        (28/Oct/20)
         Me.CenterToScreen()
+
+        sAbrirCon = My.Settings.AbrirCon
 
         EscribirEventLog("Se inicia la aplicación (Load) ",
                          EventLogEntryType.Information)
@@ -1156,6 +1107,7 @@ Public Class Form1
 
         'Dim tipoB As BuscarReemplazar.TiposBusqueda
         'tipoB = CType(cboTipoBuca.SelectedIndex, BuscarReemplazar.TiposBusqueda)
+
         Dim fMDI As fReemplazadosMDI = Nothing
 
         '' Para buscar varias coincidencias separadas por ;          (29/Oct/20)
@@ -1194,7 +1146,9 @@ Public Class Form1
             If Len(sp1) = 0 AndAlso Len(sp2) = 0 Then
                 Return col
             End If
-            fMDI = New fReemplazadosMDI
+            If My.Settings.chkGuardarAutomaticamente = False Then
+                fMDI = New fReemplazadosMDI
+            End If
         End If
 
         Dim aBuscar As New List(Of String)
@@ -1204,7 +1158,10 @@ Public Class Form1
             aBuscar.Add(sb2)
         End If
         aPoner.Add(sp1)
-        If Len(sp2) > 0 Then
+        ' Solo tener en cuenta la segunda si es And o Or            (03/Nov/20)
+        'cboTipoBuca.SelectedIndex >= BuscarReemplazar.TiposBusqueda.And Then
+        ' Mejor comprobar si cboPoner2 está habilitado
+        If Len(sp2) > 0 AndAlso cboPoner2.Enabled Then
             aPoner.Add(sp2)
         End If
 
@@ -1225,6 +1182,9 @@ Public Class Form1
             Dim guardarFi As Boolean = False
             Dim sGuardar As String = ""
 
+            ' Abrir en UTF8 y con detección del formato             (02/Nov/20)
+            ' Antes estaba con Encoding.Default
+            ' Lo vuelvo a poner en Default ya que cambia los caracteres (03/Nov/20)
             Using sr As New StreamReader(fi.FullName, Encoding.Default, True)
                 Dim s As String
 
@@ -1276,7 +1236,7 @@ Public Class Form1
                     Continue For
                 End If
 
-                If cboTipoBuca.SelectedIndex = BuscarReemplazar.TiposBusqueda.Not Then
+                If My.Settings.chkPoner = False AndAlso cboTipoBuca.SelectedIndex = BuscarReemplazar.TiposBusqueda.Not Then
                     ' Comprobar con el texto completo
                     ' ya que línea a línea no es fiable
                     If My.Settings.distinguirMay Then
@@ -1305,19 +1265,20 @@ Public Class Form1
                                                                                   tipoB,
                                                                                   chkDistinguirMay.Checked = False,
                                                                                   chkPalabrasCompletas.Checked)
+                        ' Si se indica hacer copia de seguridad,    (02/Nov/20)
+                        ' no mostrar la ventana y guardar el fichero en la carpeta indicada
+
+                        ' Si se ha modificado el texto
                         If sNuevo <> s Then
-                            ' Si se debe reemplazar directamente        (28/Dic/12)
-                            ' Si se indica chkHacerCopiaReemplazar
-                            ' aunque se haya indicado chkGuardarAutomaticamente
-                            ' se seguirá haciendo la copia
-                            If My.Settings.chkGuardarAutomaticamente = True AndAlso
-                               My.Settings.chkHacerCopiaReemplazar = False Then
+                            If My.Settings.chkGuardarAutomaticamente = True Then
 
                                 ' Guardar el fichero
                                 guardarFi = True
                                 sGuardar = sNuevo
 
                             Else
+                                ' si no se guarda automáticamente
+                                ' mostrar los ficheros en ventana aparte
                                 Dim fReemp As New fReemplazados(fi, sNuevo)
                                 fReemp.MdiParent = fMDI
                                 fReemp.Top = (fMDI.MdiChildren.Length - 1) * 3
@@ -1345,14 +1306,18 @@ Public Class Form1
                 End While
                 sr.Close()
             End Using
+
             If guardarFi Then
+                If My.Settings.chkHacerCopiaReemplazar Then
+                    guardarCopia(fi)
+                End If
                 If guardarFichero(fi, sGuardar) Then
                     Exit For
                 End If
             End If
         Next
 
-        If chkPoner.Checked Then
+        If chkPoner.Checked AndAlso fMDI IsNot Nothing Then
             If fMDI.MdiChildren().Length > 0 Then
                 fMDI.Show()
             Else
@@ -1457,6 +1422,8 @@ Public Class Form1
         End With
     End Sub
 
+    Private sAbrirCon As String
+
     ''' <summary>
     ''' Abrir con el fichero indicado
     ''' </summary>
@@ -1467,14 +1434,16 @@ Public Class Form1
                 Exit Sub
             End If
 
-            Dim sProg = My.Settings.AbrirCon
-            Dim res = InputBox("Indica el programa a usar para abrir el fichero", "Abrir con...", sProg)
-            res = res.Trim()
-            If String.IsNullOrWhiteSpace(res) Then Return
+            sAbrirCon = My.Settings.AbrirCon
+            If String.IsNullOrEmpty(sAbrirCon) Then
+                sAbrirCon = InputBox("Indica el programa a usar para abrir el fichero", "Abrir con...", sAbrirCon)
+                sAbrirCon = sAbrirCon.Trim()
+                If String.IsNullOrWhiteSpace(sAbrirCon) Then Return
+            End If
 
             ' Comprobar si tiene espacios y no está entre comillas dobles
-            If res.Contains(" ") AndAlso Not res.StartsWith(ChrW(34)) Then
-                res = ChrW(34) & res & ChrW(34)
+            If sAbrirCon.Contains(" ") AndAlso Not sAbrirCon.StartsWith(ChrW(34)) Then
+                sAbrirCon = ChrW(34) & sAbrirCon & ChrW(34)
             End If
 
             ' Si hay varios ficheros seleccionados, abrirlos todos  (29/Oct/20)
@@ -1485,26 +1454,19 @@ Public Class Form1
                 fic &= ChrW(34) & s & ChrW(34) & " "
             Next
 
-            ' Abrir el fichero indicado
-            ' Combinar los paths para que se agregue el separador de directorio
-            ' si así hiciera falta
-            'Dim fic As String = Path.Combine(.SelectedItems(0).SubItems(1).Text,
-            '                                 .SelectedItems(0).SubItems(0).Text)
-
             ' Si no tiene programa asociado, dará error             (08/Feb/08)
             Try
                 Dim p As New Process
-                p.StartInfo.FileName = res
+                p.StartInfo.FileName = sAbrirCon
                 p.StartInfo.Arguments = fic
                 p.Start()
-                'Process.Start(fic)
 
                 ' Si todo fue bien, guardar el fichero en la configuración
-                My.Settings.AbrirCon = res
+                My.Settings.AbrirCon = sAbrirCon
             Catch ex As Exception
-                EscribirEventLog("Error al iniciar el proceso: '" & res & "'" & vbCrLf & ex.Message,
+                EscribirEventLog("Error al iniciar el proceso: '" & sAbrirCon & "'" & vbCrLf & ex.Message,
                                  EventLogEntryType.Error)
-                MessageBox.Show("Error al iniciar '" & res & "' " & vbCrLf &
+                MessageBox.Show("Error al iniciar '" & sAbrirCon & "' " & vbCrLf &
                                 "seguramente el path no es correcto:" & vbCrLf &
                                 ex.Message,
                                 "Abrir fichero con",
@@ -1668,6 +1630,7 @@ Public Class Form1
     End Sub
 
     ' Los que estaban en el control WPF
+
     ''' <summary>
     ''' Devuelve el contenido del combo indicado como una cadena (string)
     ''' con cada elemento del combo separado por la barra vertical
@@ -2037,10 +2000,12 @@ Public Class Form1
             cboPoner2.Enabled = False
         End If
 
-        ' Si se selecciona Not, no permitir cambiar                 (10/Feb/08)
-        If cboTipoBuca.SelectedIndex = BuscarReemplazar.TiposBusqueda.Not Then
-            chkPoner.Checked = False
-        End If
+        ' Permitir usar NOT en reemplazar                           (03/Nov/20)
+
+        '' Si se selecciona Not, no permitir cambiar                 (10/Feb/08)
+        'If cboTipoBuca.SelectedIndex = BuscarReemplazar.TiposBusqueda.Not Then
+        '    chkPoner.Checked = False
+        'End If
     End Sub
 
 
@@ -2142,60 +2107,8 @@ Public Class Form1
     Private Sub mnuFicAcerca_Click(ByVal sender As Object,
                                    ByVal e As EventArgs) _
                                    Handles mnuFicAcerca.Click
-        'Dim sb As New StringBuilder
-        'sb.Append(My.Application.Info.Title)
-        'sb.AppendFormat(" v{0} (rev {1})", My.Application.Info.Version, Form1.FileVersion)
-        'sb.AppendLine()
-        'sb.AppendLine()
-        'sb.AppendLine(My.Application.Info.Description.Replace("  ", vbCrLf))
-        'sb.AppendLine()
-        'sb.AppendLine("Compilado con: " & My.Application.Info.Trademark)
-        'sb.AppendFormat("Ejecutándose en: {0}{1}", System.Environment.OSVersion.VersionString, vbCrLf)
-        'sb.AppendLine()
-        'sb.Append(My.Application.Info.Copyright)
-        'MessageBox.Show(sb.ToString, _
-        '                "Acerca de " & My.Application.Info.Title, _
-        '                MessageBoxButtons.OK, _
-        '                MessageBoxIcon.Asterisk)
         My.Forms.fAcercaDe.ShowDialog()
     End Sub
-
-    '' Property FileVersion                                          (07/Feb/08)
-    'Friend Shared ReadOnly Property FileVersion() As String
-    '    Get
-    '        ' Solo asignar la info, la primera vez que se solicite  (09/Feb/08)
-    '        Static yaEstuve As Boolean
-    '        Static laVersion As String
-
-    '        If yaEstuve = False Then
-    '            Dim ensamblado As System.Reflection.Assembly = _
-    '                    System.Reflection.Assembly.GetExecutingAssembly
-    '            Dim fvi As System.Diagnostics.FileVersionInfo = _
-    '                    System.Diagnostics.FileVersionInfo.GetVersionInfo(ensamblado.Location)
-
-    '            ' Asignar la cadena de la versión del fichero
-    '            laVersion = fvi.FileVersion
-    '            ' Esto hará que no se vuelva a ejecutar este código
-    '            yaEstuve = True
-    '        End If
-
-    '        Return laVersion
-    '    End Get
-    'End Property
-
-    '' Cuando se inicie la primera instancia,                        (07/Feb/08)
-    '' asignar el valor de si es administrador
-    'Shared Sub New()
-    '    EsAdministrador = _EsAdministrador()
-    '    NombreAplicacion = My.Application.Info.ProductName
-    'End Sub
-
-    '' Comprobar si se ejecuta como administrador                    (07/Feb/08)
-    'Private Shared Function _EsAdministrador() As Boolean
-    '    My.User.InitializeWithWindowsUser()
-
-    '    Return My.User.IsInRole(ApplicationServices.BuiltInRole.Administrator)
-    'End Function
 
     Private Sub mnuFicCfg_Click(ByVal sender As Object, ByVal e As EventArgs) Handles mnuFicCfg.Click
         My.Forms.fBuscarCfg.Close()
@@ -2203,13 +2116,8 @@ Public Class Form1
         guardarConfig()
 
         Using fCfg As New fBuscarCfg
-            'fCfg.ShowDialog(Me) = Windows.Forms.DialogResult.OK
-            'If My.Forms.fBuscarCfg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
             If fCfg.ShowDialog(Me) = Windows.Forms.DialogResult.OK Then
 
-                '' TODO
-                '' Esta opción aún no está implementada              (09/Feb/08)
-                'My.Settings.chkPermitirReemplazar = False
                 If EsAdministrador = False Then
                     My.Settings.chkPermitirReemplazar = False
                 End If
@@ -2217,6 +2125,7 @@ Public Class Form1
                 guardarConfig()
                 ' Actualizar el estado de poner                     (09/Feb/08)
                 chkPoner.Enabled = My.Settings.chkPermitirReemplazar
+                sAbrirCon = My.Settings.AbrirCon
 
                 ' Si se ha cambiado el path del fichero de configuración
                 If m_Cfg.FileName <> My.Settings.dirConfig Then
@@ -2275,7 +2184,7 @@ Public Class Form1
         toolTip1.SetToolTip(btnBuscar, tsbBuscar.ToolTipText)
     End Sub
 
-    Private Function ficheroCfg() As String
+    Friend Shared Function ficheroCfg() As String
         Dim fic As String
         Dim dirCfg As String
 
@@ -2327,15 +2236,42 @@ Public Class Form1
     Private Function guardarFichero(fi As FileInfo, sNuevo As String) As Boolean
         'Throw New NotImplementedException
         Try
+            ' Guardar con formato UTF8                              (02/Nov/20)
+            ' Antes estaba con Encoding.Default
+            ' Lo vuelvo a poner en Default                          (03/Nov/20)
+            ' En .NET Framework no se admite Latin1 (página ISO-8859-1)
             Using sw As New StreamWriter(fi.FullName, False, Encoding.Default)
                 sw.Write(sNuevo)
                 sw.Flush()
                 sw.Close()
             End Using
-            'Dim fw As New StreamWriter(fi.OpenWrite)
-            'fw.Write(sNuevo)
-            'fw.Flush()
-            'fw.Close()
+            Return False
+        Catch ex As Exception
+            MessageBox.Show("Error al guardar el fichero:" & vbCrLf & ex.Message,
+                            "Reemplazar",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return True
+        End Try
+    End Function
+
+    ''' <summary>
+    ''' Guardar una copia en el directorio de backup
+    ''' </summary>
+    ''' <param name="fi"></param>
+    ''' <returns></returns>
+    ''' <remarks>02/Nov/2020</remarks>
+    Private Function guardarCopia(fi As FileInfo) As Boolean
+        Dim pathDest = My.Settings.DirBackupReemplazar
+        ' Para crear en el backup el mismo directorio
+        ' (o al menos el último que incluya fi)
+        Dim dirFi = fi.DirectoryName.Replace(Path.DirectorySeparatorChar, "_").Replace(":", "_")
+        pathDest = pathDest & Path.DirectorySeparatorChar & dirFi
+        If Not Directory.Exists(pathDest) Then
+            Directory.CreateDirectory(pathDest)
+        End If
+        Dim ficDest = Path.Combine(pathDest, fi.Name)
+        Try
+            File.Copy(fi.FullName, ficDest, True)
             Return False
         Catch ex As Exception
             MessageBox.Show("Error al guardar el fichero:" & vbCrLf & ex.Message,
